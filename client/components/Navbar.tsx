@@ -20,7 +20,7 @@ const Navbar = () => {
     },
   ]);
   return (
-    <nav className="bg-white px-2 sm:px-4 py-2 w-full border-b border-slate-200">
+    <nav className="bg-white px-2 sm:px-4 py-2 w-full border-b border-gray-200">
       <div className="container flex flex-wrap items-center justify-between md:max-w-screen-md mx-auto">
         <span className="self-center text-sm uppercase font-bold whitespace-nowrap text-[#3d348b]">
           Ytb-Downloader

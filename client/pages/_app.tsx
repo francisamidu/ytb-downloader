@@ -1,5 +1,6 @@
 import "../styles/globals.css";
-import "../node_modules/react-toastify/scss/";
+import "../styles/Home.css";
+import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from "next/app";
 import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";

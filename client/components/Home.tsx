@@ -17,9 +17,7 @@ const Home = ({ page }: { page: string }) => {
     videoFormats: [],
     videoId: 0,
   });
-  const [h2, setH2] = useState(
-    "Download YouTube videos and audios in HD formats"
-  );
+  const [h2, setH2] = useState("");
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [path, setPath] = useState<AxiosResponse<IFile, any>>({
@@ -85,22 +83,26 @@ const Home = ({ page }: { page: string }) => {
         setH2("Download YouTube playlists in HD formats");
         break;
       }
-      default:
+      default: {
+        setH2("Download YouTube videos and audios in HD formats");
         break;
+      }
     }
     return () => {
       setH2("");
     };
   }, [page]);
   return (
-    <div className="mt-8 p-4">
+    <div className="p-4">
       <h1 className="text-2xl font-bold text-center text-[#3d348b]">
         "YouTube Video, Audio and Playlist downloader
       </h1>
       <h2 className="mt-2 text-center text-slate-600">{h2}</h2>
       <div className="md:max-w-screen-md mx-auto">
         <Search handleSearch={handleSearch} page={page} />
-        {loading ? <Spinner /> : null}
+        <div className="flex flex-row justify-center items-center ">
+          {loading ? <Spinner /> : null}
+        </div>
         {file.title && file.thumbnail && !loading ? (
           <VideoCard
             key={file.videoId}

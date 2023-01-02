@@ -13,9 +13,11 @@ const Layout = ({ children, page }: LayoutProps) => {
         <meta name="title" content={`${page} | Ytb Downloader`}></meta>
         <meta name="description" content="Youtube Downloader"></meta>
       </Head>
-      <Navbar />
-      {children}
-      <Footer />
+      <main className="flex flex-col justify-between min-h-[95vh]">
+        <Navbar />
+        {children}
+        <Footer />
+      </main>
     </>
   );
 };
