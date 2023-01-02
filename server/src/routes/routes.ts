@@ -1,5 +1,6 @@
 import express from "express";
 import youtubeDl from "ytdl-core";
+import ytpl from "ytpl";
 
 const router = express.Router();
 
@@ -17,23 +18,22 @@ router.get("/download", async (req, res) => {
   const { downloadFormat, url, title, itag, type } = req.query;
 
   const URL = toSupportedFormat(String(url));
-  if (!url || title) {
-    return res
-      .status(400)
-      .json({ message: "Please provide both url and title" });
+  if (!url || !title) {
+    return res.status(400).send("Please provide both url and title");
   }
-  res.header(
-    "Content-Disposition",
-    `attachment; filename="${String(title).substring(0, 25)}.${downloadFormat}"`
-  );
+
   youtubeDl(URL, {
     filter: type === "video-only" ? "videoonly" : "audioandvideo",
     quality: Number(itag),
   })
     .pipe(res)
     .on("response", (response) => {
-      // If you want to set size of file in header
-      res.setHeader("content-length", response.headers["content-length"]);
+      res
+        .header(
+          "Content-Disposition",
+          `attachment; filename="${title}.${downloadFormat}"`
+        )
+        .setHeader("content-length", response.headers["content-length"]);
     })
     .on("error", (error) => {
       return res.status(500).json({ message: error.message });
@@ -47,6 +47,7 @@ router.get("/youtube", async (req, res) => {
 
     const URL = toSupportedFormat(String(url));
     const dl = await youtubeDl.getBasicInfo(URL);
+    console.log(dl);
     const {
       formats,
       videoDetails: {
@@ -77,16 +78,23 @@ router.get("/youtube", async (req, res) => {
     return res.status(200).json(videoDetails);
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Failed to fetch data" });
+    return res.status(500).send("Failed to fetch data");
   }
 });
 
-router.get("/youtube-mp3", (req, res) => {
+router.get("/youtube-mp3", async (req, res) => {
   const url = toSupportedFormat(req.body.url);
 });
 
-router.get("/youtube-playlist", (req, res) => {
-  const url = toSupportedFormat(req.body.url);
+router.get("/youtube-playlist", async (req, res) => {
+  try {
+    const { URL } = req.query;
+    const result = await ytpl(String(URL));
+    const playlist = result.items.map((item) => ({
+      title: item.title,
+      url: item.shortUrl,
+    }));
+  } catch (error) {}
 });
 
 export default router;

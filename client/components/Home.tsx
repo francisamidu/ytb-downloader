@@ -4,9 +4,15 @@ import { formatTime, getFile, tagToFormat } from "../helpers";
 import getConfig from "next/config";
 import { IFile } from "../types";
 import { AxiosResponse } from "axios";
+import { toast } from "react-toastify";
 const { publicRuntimeConfig } = getConfig();
-const { SERVER_URL, GET_AUDIO_PATH, GET_PLAYLIST_PATH, GET_VIDEO_PATH } =
-  publicRuntimeConfig;
+const {
+  DOWNLOAD_PATH,
+  SERVER_URL,
+  GET_AUDIO_PATH,
+  GET_PLAYLIST_PATH,
+  GET_VIDEO_PATH,
+} = publicRuntimeConfig;
 
 const Home = ({ page }: { page: string }) => {
   const [file, setFile] = useState<IFile>({
@@ -53,9 +59,11 @@ const Home = ({ page }: { page: string }) => {
           setPath(await getFile(`${SERVER_URL}${GET_VIDEO_PATH}?url=${param}`));
           break;
       }
+      toast.success("Found video");
       setFile(path.data);
       setLoading(false);
     } catch (error) {
+      toast.error("Something went wrong");
       setLoading(false);
       console.log(error);
     }
@@ -65,10 +73,11 @@ const Home = ({ page }: { page: string }) => {
     const downloadFormat = tagToFormat(tag);
     try {
       await getFile(
-        `${SERVER_URL}${GET_VIDEO_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
+        `${SERVER_URL}${DOWNLOAD_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
       );
       setLoading(false);
     } catch (error) {
+      toast.error("Something went wrong");
       setLoading(false);
       console.log(error);
     }
@@ -95,7 +104,7 @@ const Home = ({ page }: { page: string }) => {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold text-center text-[#3d348b]">
-        "YouTube Video, Audio and Playlist downloader
+        YouTube Video, Audio and Playlist downloader
       </h1>
       <h2 className="mt-2 text-center text-slate-600">{h2}</h2>
       <div className="md:max-w-screen-md mx-auto">
