@@ -6,5 +6,16 @@ import Layout from "./Layout";
 import Search from "./Search";
 import Spinner from "./Spinner";
 import VideoCard from "./VideoCard";
+import Footer from "./Footer";
 
-export { Button, Dropdown, Layout, Navbar, Home, Search, Spinner, VideoCard };
+export {
+  Button,
+  Dropdown,
+  Footer,
+  Layout,
+  Navbar,
+  Home,
+  Search,
+  Spinner,
+  VideoCard,
+};

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import React, { PropsWithChildren } from "react";
-import { Navbar } from ".";
+import { Footer, Navbar } from ".";
 
 interface LayoutProps extends Partial<PropsWithChildren> {
   page: string;
@@ -15,6 +15,7 @@ const Layout = ({ children, page }: LayoutProps) => {
       </Head>
       <Navbar />
       {children}
+      <Footer />
     </>
   );
 };
