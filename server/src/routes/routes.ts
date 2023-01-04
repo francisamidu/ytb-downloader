@@ -47,7 +47,6 @@ router.get("/youtube", async (req, res) => {
 
     const URL = toSupportedFormat(String(url));
     const dl = await youtubeDl.getBasicInfo(URL);
-    console.log(dl);
     const {
       formats,
       videoDetails: {
@@ -94,6 +93,7 @@ router.get("/youtube-playlist", async (req, res) => {
       title: item.title,
       url: item.shortUrl,
     }));
+    return res.status(200).json(playlist);
   } catch (error) {}
 });
 
