@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Search, Spinner, VideoCard } from ".";
-import { formatTime, getFile, tagToFormat } from "../helpers";
+import { downloadFile, formatTime, getFile, tagToFormat } from "../helpers";
 import getConfig from "next/config";
 import { IFile } from "../types";
 import { AxiosResponse } from "axios";
@@ -72,7 +72,7 @@ const Home = ({ page }: { page: string }) => {
     setLoading(true);
     const downloadFormat = tagToFormat(tag);
     try {
-      await getFile(
+      await downloadFile(
         `${SERVER_URL}${DOWNLOAD_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
       );
       setLoading(false);

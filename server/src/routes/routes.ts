@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import youtubeDl from "ytdl-core";
 import ytpl from "ytpl";
 
@@ -22,22 +22,23 @@ router.get("/download", async (req, res) => {
     return res.status(400).send("Please provide both url and title");
   }
 
+  const videoId = youtubeDl.getURLVideoID(String(url));
+
+  let info = await youtubeDl.getInfo(videoId);
+  let format = youtubeDl.chooseFormat(info.formats, { quality: String(itag) });
+
+  res
+    .header(
+      "Content-Disposition",
+      `attachment; filename="${title}.${downloadFormat}"`
+    )
+    .setHeader("content-length", format.contentLength);
+
   youtubeDl(URL, {
-    filter: type === "video-only" ? "videoonly" : "audioandvideo",
-    quality: Number(itag),
+    format,
+    filter: (format) => !!format.contentLength,
   })
-    .pipe(res)
-    .on("response", (response) => {
-      res
-        .header(
-          "Content-Disposition",
-          `attachment; filename="${title}.${downloadFormat}"`
-        )
-        .setHeader("content-length", response.headers["content-length"]);
-    })
-    .on("error", (error) => {
-      return res.status(500).json({ message: error.message });
-    })
+    .on("data", () => {})
     .pipe(res);
 });
 
@@ -58,12 +59,14 @@ router.get("/youtube", async (req, res) => {
       },
     } = dl;
 
-    const videoFormats = formats.map((format) => ({
-      size: format.contentLength,
-      format: format.qualityLabel,
-      tag: format.itag,
-      url: format.url,
-    }));
+    const videoFormats = formats
+      .map((format) => ({
+        size: format.contentLength,
+        format: format.qualityLabel,
+        tag: format.itag,
+        url: format.url,
+      }))
+      .filter((file) => !Number.isNaN(Number(file.size)));
 
     const videoDetails = {
       duration: lengthSeconds,

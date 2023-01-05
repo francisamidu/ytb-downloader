@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import "../styles/Home.css";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import type { AppProps } from "next/app";
 import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
@@ -15,6 +16,11 @@ type AppPropsWithLayout = AppProps & {
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page: any) => page);
-  return <>{getLayout(<Component {...pageProps} />)}</>;
+  return (
+    <>
+      <ToastContainer />
+      {getLayout(<Component {...pageProps} />)}
+    </>
+  );
 };
 export default App;

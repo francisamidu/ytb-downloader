@@ -19,5 +19,5 @@ app.use(urlencoded({ extended: true }));
 app.use("/api", api);
 
 app.listen(PORT, () => {
-  console.log("🚀 Listening on port: %s", PORT);
+  console.log("Listening on port: %s", PORT);
 });

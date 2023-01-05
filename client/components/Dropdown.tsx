@@ -45,6 +45,7 @@ const Dropdown = ({
             >
               <p
                 data-value={link.format}
+                data-url={`${link.url}`}
                 className="block py-2 px-4 hover:bg-gray-100"
               >
                 {link.format ? link.format : null}
