@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Search, Spinner, VideoCard } from ".";
-import { downloadFile, formatTime, getFile, tagToFormat } from "../helpers";
+import {
+  downloadFile,
+  formatTime,
+  getErrorMessage,
+  getFile,
+  tagToFormat,
+} from "../helpers";
 import { IFile } from "../types";
 import { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
@@ -63,9 +69,8 @@ const Home = ({ page }: { page: string }) => {
       setFile(path.data);
       setLoading(false);
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(getErrorMessage(error));
       setLoading(false);
-      console.log(error);
     }
   };
   const handleDownload = async ({ tag }: { tag: number }) => {
@@ -83,7 +88,7 @@ const Home = ({ page }: { page: string }) => {
       }
       setLoading(false);
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(getErrorMessage(error));
       setLoading(false);
       console.log(error);
     }
