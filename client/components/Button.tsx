@@ -9,7 +9,7 @@ type ButtonProps = {
 };
 const Button = ({ classNames, icon, text, onClick, param }: ButtonProps) => {
   const style =
-    "text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center outline-none";
+    "text-white bg-[#3d348b] hover:bg-[#4f479c] font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center outline-none";
   const styles = classNames ? `${style} ${classNames}` : style;
   const handleClick = () => {
     if (onClick && param) {
