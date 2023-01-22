@@ -86,7 +86,7 @@ router.get("/video-info", async (req, res) => {
 
 router.get("/audio-info", async (req, res) => {
   try {
-    const url = toSupportedFormat(req.body.url);
+    const url = toSupportedFormat(String(req.query.url));
     const dl = await youtubeDl.getBasicInfo(url);
     let info = await youtubeDl.getInfo(dl.videoDetails.videoId);
     const {
