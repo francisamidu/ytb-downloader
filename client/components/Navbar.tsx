@@ -8,11 +8,11 @@ const Navbar = () => {
       text: "YouTube Downloader",
       link: "/",
     },
-    {
-      active: false,
-      text: "Playlist Downloader",
-      link: "/playlist",
-    },
+    // {
+    //   active: false,
+    //   text: "Playlist Downloader",
+    //   link: "/playlist",
+    // },
     {
       active: false,
       text: "Mp3 Downloader",

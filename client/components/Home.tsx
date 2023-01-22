@@ -11,7 +11,7 @@ const {
   SERVER_URL,
   GET_AUDIO_PATH,
   GET_PLAYLIST_PATH,
-  GET_VIDEO_PATH,
+  GET_FILE_PATH,
 } = publicRuntimeConfig;
 
 const Home = ({ page }: { page: string }) => {
@@ -47,7 +47,7 @@ const Home = ({ page }: { page: string }) => {
     try {
       switch (page) {
         case "mp3-downloader":
-          setPath(await getFile(`${SERVER_URL}${GET_AUDIO_PATH}?url=${param}`));
+          setPath(await getFile(`${SERVER_URL}${GET_FILE_PATH}?url=${param}`));
           break;
         case "playlist": {
           setPath(
@@ -56,7 +56,7 @@ const Home = ({ page }: { page: string }) => {
           break;
         }
         default:
-          setPath(await getFile(`${SERVER_URL}${GET_VIDEO_PATH}?url=${param}`));
+          setPath(await getFile(`${SERVER_URL}${GET_FILE_PATH}?url=${param}`));
           break;
       }
       toast.success("Found video");
@@ -72,9 +72,15 @@ const Home = ({ page }: { page: string }) => {
     setLoading(true);
     const downloadFormat = tagToFormat(tag);
     try {
-      await downloadFile(
-        `${SERVER_URL}${DOWNLOAD_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
-      );
+      if(page === 'mp3-downloader'){    
+        await downloadFile(
+          `${SERVER_URL}${GET_AUDIO_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
+        );
+      }else{
+        await downloadFile(
+          `${SERVER_URL}${DOWNLOAD_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
+        );
+      }
       setLoading(false);
     } catch (error) {
       toast.error("Something went wrong");

@@ -14,7 +14,7 @@ const toSupportedFormat = (url: string) => {
   return url;
 };
 
-router.get("/download", async (req, res) => {
+router.get("/download-video", async (req, res) => {
   const { downloadFormat, url, title, itag, type } = req.query;
 
   const URL = toSupportedFormat(String(url));
@@ -42,7 +42,7 @@ router.get("/download", async (req, res) => {
     .pipe(res);
 });
 
-router.get("/youtube", async (req, res) => {
+router.get("/video-info", async (req, res) => {
   try {
     const { url } = req.query;
 
@@ -74,7 +74,7 @@ router.get("/youtube", async (req, res) => {
       thumbnail: thumbnails[2].url,
       channel: ownerChannelName,
       videoId,
-      videoFormats,
+      formats: videoFormats,
     };
 
     return res.status(200).json(videoDetails);
@@ -84,9 +84,45 @@ router.get("/youtube", async (req, res) => {
   }
 });
 
-router.get("/youtube-mp3", async (req, res) => {
-  const url = toSupportedFormat(req.body.url);
+router.get("/mp3-info", async (req, res) => {
+  try {
+    const url = toSupportedFormat(req.body.url);
+    const dl = await youtubeDl.getBasicInfo(url);
+    let info = await youtubeDl.getInfo(dl.videoDetails.videoId);
+    const {
+      videoDetails: {
+        lengthSeconds,
+        title,
+        thumbnails,
+        ownerChannelName,
+        videoId,
+      },
+    } = dl;
+    let audioFormats = youtubeDl
+      .filterFormats(info.formats, "audioonly")
+      .map((format) => ({
+        size: format.contentLength,
+        format: format.qualityLabel,
+        tag: format.itag,
+        url: format.url,
+      }))
+      .filter((file) => !Number.isNaN(Number(file.size)));
+    const details = {
+      duration: lengthSeconds,
+      title,
+      thumbnail: thumbnails[2].url,
+      channel: ownerChannelName,
+      videoId,
+      formats: audioFormats,
+    };
+    return res.status(200).json(details);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Failed to fetch data");
+  }
 });
+
+router.get("/download-audio", async (req, res) => {});
 
 router.get("/youtube-playlist", async (req, res) => {
   try {
