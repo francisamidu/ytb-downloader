@@ -7,11 +7,7 @@ interface DropdownProps extends IFile {
   label: string;
   handler: ({ tag, url }: { tag: number; url: string }) => Promise<void>;
 }
-const Dropdown = ({
-  label,
-  videoFormats: links,
-  handler,
-}: Partial<DropdownProps>) => {
+const Dropdown = ({ label, formats, handler }: Partial<DropdownProps>) => {
   const dropdownRef: MutableRefObject<any> = useRef();
   const handleClick = () => {
     dropdownRef?.current.classList.toggle("hidden");
@@ -38,7 +34,7 @@ const Dropdown = ({
           className="py-1 text-sm text-slate-800"
           aria-labelledby="dropdownDefault"
         >
-          {links?.map((link) => (
+          {formats?.map((link) => (
             <li
               className="hover:cursor-pointer hover:bg-[#443a9b]"
               onClick={() => handleDownload(link.tag, link.url)}

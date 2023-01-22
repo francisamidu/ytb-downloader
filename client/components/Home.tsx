@@ -7,11 +7,11 @@ import { toast } from "react-toastify";
 import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 const {
-  DOWNLOAD_PATH,
   SERVER_URL,
+  DOWNLOAD_AUDIO_PATH,
+  DOWNLOAD_VIDEO_PATH,
   GET_AUDIO_PATH,
-  GET_PLAYLIST_PATH,
-  GET_FILE_PATH,
+  GET_VIDEO_PATH,
 } = publicRuntimeConfig;
 
 const Home = ({ page }: { page: string }) => {
@@ -20,7 +20,7 @@ const Home = ({ page }: { page: string }) => {
     duration: 0,
     thumbnail: "",
     title: "",
-    videoFormats: [],
+    formats: [],
     videoId: 0,
   });
   const [h2, setH2] = useState("");
@@ -33,7 +33,7 @@ const Home = ({ page }: { page: string }) => {
       duration: 0,
       thumbnail: "",
       title: "",
-      videoFormats: [],
+      formats: [],
       videoId: 0,
     },
     headers: {},
@@ -47,16 +47,16 @@ const Home = ({ page }: { page: string }) => {
     try {
       switch (page) {
         case "mp3-downloader":
-          setPath(await getFile(`${SERVER_URL}${GET_FILE_PATH}?url=${param}`));
+          setPath(await getFile(`${SERVER_URL}${GET_AUDIO_PATH}?url=${param}`));
           break;
         case "playlist": {
-          setPath(
-            await getFile(`${SERVER_URL}${GET_PLAYLIST_PATH}?url=${param}`)
-          );
+          // setPath(
+          //   await getFile(`${SERVER_URL}${GET_PLAYLIST_PATH}?url=${param}`)
+          // );
           break;
         }
         default:
-          setPath(await getFile(`${SERVER_URL}${GET_FILE_PATH}?url=${param}`));
+          setPath(await getFile(`${SERVER_URL}${GET_VIDEO_PATH}?url=${param}`));
           break;
       }
       toast.success("Found video");
@@ -72,13 +72,13 @@ const Home = ({ page }: { page: string }) => {
     setLoading(true);
     const downloadFormat = tagToFormat(tag);
     try {
-      if(page === 'mp3-downloader'){    
+      if (page === "mp3-downloader") {
         await downloadFile(
-          `${SERVER_URL}${GET_AUDIO_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
+          `${SERVER_URL}${DOWNLOAD_AUDIO_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
         );
-      }else{
+      } else {
         await downloadFile(
-          `${SERVER_URL}${DOWNLOAD_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
+          `${SERVER_URL}${DOWNLOAD_VIDEO_PATH}?url=${url}&itag=${tag}&downloadFormat=${downloadFormat.format}&title=${file.title}&type=audioandvideo`
         );
       }
       setLoading(false);
@@ -126,7 +126,7 @@ const Home = ({ page }: { page: string }) => {
             timestamp={formatTime(file.duration)}
             title={file.title}
             channel={file.channel}
-            videoFormats={file.videoFormats}
+            formats={file.formats}
           />
         ) : null}
       </div>

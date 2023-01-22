@@ -4,7 +4,7 @@ interface File {
   thumbnail: string;
   channel: string;
   videoId: number;
-  videoFormats: Array<{
+  formats: Array<{
     size: string;
     format:
       | "144p"

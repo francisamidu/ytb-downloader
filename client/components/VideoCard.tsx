@@ -10,7 +10,7 @@ interface VideoCardProps extends IFile {
 }
 const VideoCard = ({
   channel,
-  videoFormats: formats,
+  formats,
   timestamp,
   title,
   thumbnail,
@@ -32,7 +32,7 @@ const VideoCard = ({
         <div className="mt-3">
           <Dropdown
             label="Choose format"
-            videoFormats={formats}
+            formats={formats}
             handler={handler}
             duration={0}
             title={""}
