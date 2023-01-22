@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Search, Spinner, VideoCard } from ".";
 import { downloadFile, formatTime, getFile, tagToFormat } from "../helpers";
-import getConfig from "next/config";
 import { IFile } from "../types";
 import { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
+import getConfig from "next/config";
 const { publicRuntimeConfig } = getConfig();
 const {
   DOWNLOAD_PATH,
