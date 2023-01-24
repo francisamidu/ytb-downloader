@@ -65,7 +65,7 @@ const Home = ({ page }: { page: string }) => {
           setPath(await getFile(`${SERVER_URL}${GET_VIDEO_PATH}?url=${param}`));
           break;
       }
-      setFile(path.data);
+      if (path.data) setFile(path.data);
       setLoading(false);
     } catch (error) {
       toast.error(getErrorMessage(error));

@@ -10,7 +10,7 @@ const Mp3Downloader = () => {
 };
 
 Mp3Downloader.getLayout = (page: ReactNode) => {
-  return <Layout page="Home">{page}</Layout>;
+  return <Layout page="Mp3-Downloader">{page}</Layout>;
 };
 
 export default Mp3Downloader;
