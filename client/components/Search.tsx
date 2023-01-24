@@ -29,7 +29,13 @@ const Search = ({ handleSearch, page }: SearchProps) => {
     };
   }, [placeholder, page]);
   return (
-    <form className="my-7 flex justify-center items-center ">
+    <form
+      className="my-7 flex justify-center items-center"
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleSearch();
+      }}
+    >
       <div className="w-3/5 flex justify-center items-center mb-3">
         <div className="relative w-full mr-3">
           <input
